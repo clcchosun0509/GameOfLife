@@ -2,16 +2,15 @@ import React, { Component } from "react";
 
 export default class cell extends Component {
   state = {
-    alive: false
+    alive: this.props.alive
   };
 
   onClick = () => {
     if (!this.state.alive) {
       this.props.setAliveCell(this.props.row, this.props.col);
     }
-
     this.setState({
-      alive: !this.state.alive
+      alive: true
     });
   };
 

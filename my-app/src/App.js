@@ -6,19 +6,12 @@ import "./App.css";
 class App extends Component {
   state = {
     rows: "",
-    cols: "",
-    start: false
+    cols: ""
   };
 
   onChange = e =>
     this.setState({
       [e.target.name]: e.target.value
-    });
-
-  onClick = e =>
-    this.setState({
-      ...this.state,
-      start: true
     });
 
   render() {
@@ -46,7 +39,6 @@ class App extends Component {
             start={this.state.start}
           />
         </div>
-        <button onClick={this.onClick}>시작하기</button>
       </div>
     );
   }

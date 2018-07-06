@@ -3,11 +3,18 @@ import Cell from "./Cell";
 
 const initialState = {
   row: [],
-  col: []
+  col: [],
+  start: false
 };
 
 export default class cells extends Component {
   state = initialState;
+
+  onClick = e =>
+    this.setState({
+      ...this.state,
+      start: true
+    });
 
   setAliveCell = (row, col) => {
     this.setState({
@@ -21,9 +28,10 @@ export default class cells extends Component {
       for (let j = 0; j < cols; j++) {
         cells.push(
           <Cell
-            key={String(i) + String(j)}
+            key={String(i) + String(j) + String(i)}
             row={i}
             col={j}
+            alive={false}
             setAliveCell={this.setAliveCell}
           />
         );
@@ -46,7 +54,7 @@ export default class cells extends Component {
     return numOfAlivedCell;
   };
 
-  updateCell = (arrayRow, arrayCol) => {
+  updateCell = (arrayRow, arrayCol, cells) => {
     const cols = Number(this.props.cols) + 1; //br태그 포함해서 열에 포함
     let alivedCell = []; //살아있는 세포 배열
     let unsearchedCell = []; //죽어있는 세포 배열도 포함된 탐색에 쓰일 세포 배열
@@ -113,19 +121,36 @@ export default class cells extends Component {
       }
     });
     console.log("nextAlivedCell:" + nextAlivedCell);
+
+    cells = [];
+    for (let i = 0; i < this.props.rows; i++) {
+      for (let j = 0; j < this.props.cols; j++) {
+        cells.push(
+          <Cell
+            key={String(i) + String(j) + String(i)}
+            row={i}
+            col={j}
+            alive={true}
+            setAliveCell={this.setAliveCell}
+          />
+        );
+      }
+      cells.push(<br key={i} />);
+    }
   };
 
   render(props) {
     let cells = [];
     this.initCell(this.props.rows, this.props.cols, cells);
-    if (this.props.start) {
-      this.updateCell(this.state.row, this.state.col);
+    if (this.state.start) {
+      this.updateCell(this.state.row, this.state.col, cells);
+      this.state.start = false;
     }
 
     return (
       <div className="cells">
         {cells}
-        {this.props.start ? <p>시작하였습니다.</p> : ""}
+        <button onClick={this.onClick}>시작하기</button>
       </div>
     );
   }
