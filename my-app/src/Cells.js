@@ -4,7 +4,8 @@ import Cell from "./Cell";
 const initialState = {
   row: [],
   col: [],
-  start: false
+  start: false,
+  cellsArray: []
 };
 
 export default class cells extends Component {
@@ -23,10 +24,11 @@ export default class cells extends Component {
     });
   };
 
-  initCell = (rows, cols, cells) => {
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        cells.push(
+  initCell = () => {
+    let joined = [];
+    for (let i = 0; i < this.props.rows; i++) {
+      for (let j = 0; j < this.props.cols; j++) {
+        joined.push(
           <Cell
             key={String(i) + String(j) + String(i)}
             row={i}
@@ -36,8 +38,9 @@ export default class cells extends Component {
           />
         );
       }
-      cells.push(<br key={i} />);
+      joined.push(<br key={i} />);
     }
+    this.setState({ cellsArray: [initialState.cellsArray, joined] });
   };
 
   //탐색 대상 세포 주위에 몇개의 세포가 살아있는지 찾음
@@ -139,17 +142,20 @@ export default class cells extends Component {
     }
   };
 
+  changeMatrix = () => {
+    this.initCell();
+  };
+
   render(props) {
-    let cells = [];
-    this.initCell(this.props.rows, this.props.cols, cells);
     if (this.state.start) {
-      this.updateCell(this.state.row, this.state.col, cells);
       this.state.start = false;
+      this.updateCell(this.state.row, this.state.col, cells);
     }
 
     return (
       <div className="cells">
-        {cells}
+        {this.state.cellsArray}
+        <button onClick={this.changeMatrix}>바꾸기</button>
         <button onClick={this.onClick}>시작하기</button>
       </div>
     );
