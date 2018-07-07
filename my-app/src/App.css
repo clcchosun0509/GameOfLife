@@ -12,12 +12,31 @@
   margin-right: 5px;
   margin-bottom: 0px;
   padding: 0;
-  background-color: blue;
-  width: 50px;
-  height: 50px;
+  background-color: #ff1493;
+  width: 25px;
+  height: 25px;
   display: inline-block;
 }
 
 .red {
-  background-color: red !important;
+  background-color: #86b830 !important;
+}
+
+.no-spinners {
+  -moz-appearance: textfield;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.App .form-row h3 {
+  font-size: 60px;
+}
+
+.btn-cus-group {
+  top: 5%;
+  left: 75%;
 }
