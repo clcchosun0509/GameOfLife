@@ -4,18 +4,13 @@ import Cell from "./Cell";
 const initialState = {
   row: [],
   col: [],
-  start: false,
   cellsArray: []
 };
 
 export default class cells extends Component {
   state = initialState;
 
-  onClick = e =>
-    this.setState({
-      ...this.state,
-      start: true
-    });
+  onClick = e => this.updateCell(this.state.row, this.state.col);
 
   setAliveCell = (row, col) => {
     this.setState({
@@ -30,7 +25,7 @@ export default class cells extends Component {
       for (let j = 0; j < this.props.cols; j++) {
         joined.push(
           <Cell
-            key={String(i) + String(j) + String(i)}
+            key={String(Math.random() * 100)}
             row={i}
             col={j}
             alive={false}
@@ -57,7 +52,7 @@ export default class cells extends Component {
     return numOfAlivedCell;
   };
 
-  updateCell = (arrayRow, arrayCol, cells) => {
+  updateCell = (arrayRow, arrayCol) => {
     const cols = Number(this.props.cols) + 1; //br태그 포함해서 열에 포함
     let alivedCell = []; //살아있는 세포 배열
     let unsearchedCell = []; //죽어있는 세포 배열도 포함된 탐색에 쓰일 세포 배열
@@ -124,34 +119,54 @@ export default class cells extends Component {
       }
     });
     console.log("nextAlivedCell:" + nextAlivedCell);
-
-    cells = [];
+    let joined = [];
     for (let i = 0; i < this.props.rows; i++) {
       for (let j = 0; j < this.props.cols; j++) {
-        cells.push(
+        joined.push(
           <Cell
-            key={String(i) + String(j) + String(i)}
+            key={String(Math.random() * 100)}
             row={i}
             col={j}
-            alive={true}
+            alive={false}
             setAliveCell={this.setAliveCell}
           />
         );
       }
-      cells.push(<br key={i} />);
+      joined.push(<br key={i} />);
     }
+    let col = [];
+    let row = [];
+    nextAlivedCell.forEach((val, index) => {
+      let tempRow = parseInt(val / cols, 10);
+      let tempCol = val % cols;
+      row.push(tempRow);
+      col.push(tempCol);
+      joined.splice(
+        val,
+        1,
+        <Cell
+          key={String(Math.random() * 100)}
+          row={tempRow}
+          col={tempCol}
+          alive={true}
+          setAliveCell={this.setAliveCell}
+        />
+      );
+    });
+    console.log("after col:" + col);
+    console.log("after row:" + row);
+    this.setState({
+      row: [initialState.row, row],
+      col: [initialState.col, col],
+      cellsArray: [initialState.cellsArray, joined]
+    });
   };
 
   changeMatrix = () => {
     this.initCell();
   };
 
-  render(props) {
-    if (this.state.start) {
-      this.state.start = false;
-      this.updateCell(this.state.row, this.state.col, cells);
-    }
-
+  render() {
     return (
       <div className="cells">
         {this.state.cellsArray}
