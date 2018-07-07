@@ -53,6 +53,8 @@ export default class cells extends Component {
   };
 
   updateCell = (arrayRow, arrayCol) => {
+    arrayRow = [...this.state.row];
+    arrayCol = [...this.state.col];
     console.log(arrayRow);
     console.log(arrayCol);
     const cols = Number(this.props.cols) + 1; //br태그 포함해서 열에 포함
@@ -159,8 +161,8 @@ export default class cells extends Component {
     console.log("after col:" + col);
     console.log("after row:" + row);
     this.setState({
-      [row]: [...initialState.row, row],
-      [col]: [...initialState.col, col],
+      row: [...initialState.row, ...row],
+      col: [...initialState.col, ...col],
       cellsArray: [...initialState.cellsArray, joined]
     });
   };
