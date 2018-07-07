@@ -53,6 +53,8 @@ export default class cells extends Component {
   };
 
   updateCell = (arrayRow, arrayCol) => {
+    console.log(arrayRow);
+    console.log(arrayCol);
     const cols = Number(this.props.cols) + 1; //br태그 포함해서 열에 포함
     let alivedCell = []; //살아있는 세포 배열
     let unsearchedCell = []; //죽어있는 세포 배열도 포함된 탐색에 쓰일 세포 배열
@@ -85,7 +87,7 @@ export default class cells extends Component {
         if (a.slice(-1)[0] !== b) a.push(b);
         return a;
       }, []);
-    console.log(alivedCell);
+    console.log("alivedCell:" + alivedCell);
 
     //unsearchedCell 정렬하기
     unsearchedCell = unsearchedCell
@@ -97,7 +99,7 @@ export default class cells extends Component {
         if (a.slice(-1)[0] !== b) a.push(b);
         return a;
       }, []);
-    console.log(unsearchedCell);
+    console.log("unsearchedCell:" + unsearchedCell);
 
     //unsearchedCell에 있는 값중 alivedCell에 있는 값을 찾아내서 삭제. 즉, 죽어있는 세포만으로 배열을 구성
     unsearchedCell = unsearchedCell.filter(val => !alivedCell.includes(val));
@@ -153,12 +155,13 @@ export default class cells extends Component {
         />
       );
     });
+
     console.log("after col:" + col);
     console.log("after row:" + row);
     this.setState({
-      row: [initialState.row, row],
-      col: [initialState.col, col],
-      cellsArray: [initialState.cellsArray, joined]
+      [row]: [...initialState.row, row],
+      [col]: [...initialState.col, col],
+      cellsArray: [...initialState.cellsArray, joined]
     });
   };
 
